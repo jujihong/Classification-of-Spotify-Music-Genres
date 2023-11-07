@@ -2,8 +2,8 @@
 # Title: 변압기 코어 형상에 따른 감자화 이전 및 이후 잔류 자속 예측
 # Members:
   - 주지홍 미래자동차공학과(tjqjtjqj@hanyang.ac.kr)
-  - 심동빈 기계공학과
-  - 유경원 경영학부
+  - 심동빈 기계공학과(dong-bin@naver.com)
+  - 유경원 경영학부(yoowon0527@naver.com)
 
 # Proposal: Option A
 # Motivation and Goal
