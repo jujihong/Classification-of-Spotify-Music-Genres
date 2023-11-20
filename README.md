@@ -55,3 +55,18 @@ AI+X 딥러닝 Final Project
 
 ------------------------------------
 ## III. Methodology
+### Preprocessing
+  - 먼저 preprocessed.csv에서 학습에 관련이 없는 track_id,	track_name,	track_artist,	track_popularity,	track_album_id,	track_album_name,	track_album_release_date,	playlist_name,	playlist_id, playlist_subgenre는 제거하였습니다.
+  - playlist_genre의 데이터 중 숫자로 이루어진 데이터(잘못된 데이터, 결측치)가 있으므로 이 값들을 제거하였습니다.
+  - playlist_genre의 데이터 중 edm, pop, latin, r&b, rap, rock을 제외한 데이터는 앞의 여섯가지 데이터에 비해 데이터의 수가 현저히 적기에 클래스에서 제외하였습니다.
+  - playlist_genre의 dem, pop, latin, r&b, rap, rock의 분류를 위해 1에서 6의 숫자 클래스를 적용하였습니다.
+
+### Machine learning method
+  - 결정 트리 모델
+  - 랜덤 포레스트 모델
+
+### Code 설명
+#### 결정 트리 모델
+% 테이블 생성
+Table = readtable("spotify_songs.csv");
+disp('Hello, MATLAB!');
