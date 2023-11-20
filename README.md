@@ -125,4 +125,7 @@ test 데이터와 train 데이터를 나누는 것은 랜덤하게 이루어짐�
 load('decisiontree.mat');
 ```
 >파일을 작업 공간으로 불러온 후 정확도 계산 및 혼동 행렬을 실행하면 정확도 45.1%와 아래의 혼동 행렬을 얻을 수 있습니다.
+><p align="center">
+  <img src="[https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbqP9vg%2FbtrqAd1cWv6%2FZ0NExFFGkxOVZKrkmne3d1%2Fimg.png](https://github.githubassets.com/images/icons/emoji/octocat.png)">
+</p>
 ![GitHub Octocat](https://github.githubassets.com/images/icons/emoji/octocat.png)
