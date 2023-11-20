@@ -70,16 +70,19 @@ AI+X 딥러닝 Final Project
 ```matlab
 % 테이블 생성
 Table = readtable("preprocessed.csv");
-
+'''
 >이는 같은 디렉토리 내의 preprocessed.csv 파일을 matlab 작업공간 내로 불러오는 코드입니다.
 
+```matlab
 % 문자열을 범주형 데이터로 변환
 Table.playlist_genre = categorical(Table.playlist_genre);
 
 % 범주형 데이터를 숫자로 변환
 Table.playlist_genre = double(Table.playlist_genre);
+```
 >이는 playlist_genre의 문자열 클래스를 숫자 클래스로 변경하는 전처리 과정입니다.
 
+```matlab
 % 특성 데이터 설정
 data = 2:13;
 
