@@ -67,6 +67,7 @@ AI+X 딥러닝 Final Project
 
 ### Code 설명
 #### 결정 트리 모델
+```matlab
 % 테이블 생성
 Table = readtable("spotify_songs.csv");
-disp('Hello, MATLAB!');
+```
