@@ -113,3 +113,16 @@ accuracy = sum(YTest == YPred) / length(YTest);
 fprintf('Accuracy: %.2f%%\n', accuracy * 100);
 ```
 >정확도를 계산합니다. 정확도는 올바로 예측한 횟수/전체 예측 횟수*100(%)으로 표현됩니다.
+```matlab
+% 혼동 행렬
+confusionchart(YTest, YPred);
+```
+>혼동 행렬을 그립니다. 혼동 행렬(Confusion Matrix)은 머신 러닝과 통계에서 분류 모델의 성능을 평가하는 데 사용되는 표입니다. 이 행렬은 모델이 예측한 결과와 실제 결과 간의 일치 및 불일치를 요약하여 제공합니다.
+test 데이터와 train 데이터를 나누는 것은 랜덤하게 이루어짐으로, 시뮬레이션의 매 실행마다 정확도 결과는 달라집니다. 
+한 번의 실행 결과에 대한 결과 파일은 decisiontree.mat입니다. 아래의 코드를 통해 같은 디렉토리 내의 mat 파일을 매트랩 작업 공간 내로 불러올 수 있습니다.
+```matlab
+% 파일 불러오기
+load('decisiontree.mat');
+```
+>파일을 작업 공간으로 불러온 후 정확도 계산 및 혼동 행렬을 실행하면 정확도 45.1%와 아래의 혼동 행렬을 얻을 수 있습니다.
+![GitHub Octocat]([https://github.githubassets.com/images/icons/emoji/octocat.png](https://github.com/jujihong/predict_demagnet/blob/main/decisiontree_confusion_matrix.jpg?raw=true)https://github.com/jujihong/predict_demagnet/blob/main/decisiontree_confusion_matrix.jpg)
