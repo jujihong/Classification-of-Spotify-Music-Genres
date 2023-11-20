@@ -128,4 +128,6 @@ load('decisiontree.mat');
 ><p align="center">
   <img src="https://github.com/jujihong/predict_demagnet/blob/main/decisiontree_confusion_matrix.jpg">
 </p>
-![GitHub Octocat](https://github.com/jujihong/predict_demagnet/blob/main/decisiontree_confusion_matrix.jpg)
+
+#### 랜덤 포레스트 모델
+6개의 클래스가 있기에, test 데이터를 무작위로 찍으면 결과가 정답일 확률은 16.66%입니다. 결정 트리 모델은 대략 44~46% 정도의 정확도를 보였습니다. 이는 16.66%에 비해서는 높은 값이지만, 좀 더 좋은 모델을 이용하여 분류의 정확도를 높이고자 하였습니다
