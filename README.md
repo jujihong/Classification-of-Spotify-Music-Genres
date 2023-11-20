@@ -71,7 +71,7 @@ AI+X 딥러닝 Final Project
 % 테이블 생성
 Table = readtable("preprocessed.csv");
 ```
->이는 같은 디렉토리 내의 preprocessed.csv 파일을 matlab 작업공간 내로 불러오는 코드입니다.
+>같은 디렉토리 내의 preprocessed.csv 파일을 matlab 작업공간 내로 Table이라는 table 데이터 형식으로 불러오는 코드입니다.
 ```matlab
 % 문자열을 범주형 데이터로 변환
 Table.playlist_genre = categorical(Table.playlist_genre);
@@ -79,7 +79,7 @@ Table.playlist_genre = categorical(Table.playlist_genre);
 % 범주형 데이터를 숫자로 변환
 Table.playlist_genre = double(Table.playlist_genre);
 ```
->이는 playlist_genre의 문자열 클래스를 숫자 클래스로 변경하는 전처리 과정입니다.
+>playlist_genre의 문자열 클래스를 숫자 클래스로 변경하는 전처리 과정입니다.
 ```matlab
 % 특성 데이터 설정
 data = 2:13;
@@ -97,4 +97,19 @@ XTrain = X(~idx,:);
 YTrain = Y(~idx,:);
 XTest = X(idx,:);
 YTest = Y(idx,:);
-'''
+```
+>table의 2에서 13열을 특성 데이터로 설정하고, 데이터를 훈련 세트와 테스트 세트로 분할하는 코드입니다. 전체 데이터의 80%가 train 데이터, 나머지 20% 데이터가 test 데이터로 이용됩니다.
+```matlab
+% 결정 트리 모델 훈련
+Mdl = fitctree(XTrain,YTrain);
+
+% 테스트 데이터에 대한 예측 수행
+YPred = predict(Mdl, XTest);
+```
+>train용 특성 데이터와 레이블 데이터를 이용하여 결정 트리 모델을 훈련하고, test용 특성 데이터와 레이블 데이터와 결정 트리 모델을 통해 예측을 수행합니다.
+```matlab
+% 정확도 계산
+accuracy = sum(YTest == YPred) / length(YTest);
+fprintf('Accuracy: %.2f%%\n', accuracy * 100);
+```
+>정확도를 계산합니다. 정확도는 올바로 예측한 횟수/전체 예측 횟수*100(%)으로 표현됩니다.
