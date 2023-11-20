@@ -70,7 +70,7 @@ AI+X 딥러닝 Final Project
 ```matlab
 % 테이블 생성
 Table = readtable("preprocessed.csv");
-'''
+```
 >이는 같은 디렉토리 내의 preprocessed.csv 파일을 matlab 작업공간 내로 불러오는 코드입니다.
 ```matlab
 % 문자열을 범주형 데이터로 변환
