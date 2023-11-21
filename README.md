@@ -193,13 +193,28 @@ results = bayesopt(oobErrRF, hyperparametersRF, 'Verbose', 1, 'IsObjectiveDeterm
 >bayesopt 함수 실행 후에는 최적의 하이퍼파라미터 조합이 results.XAtMinEstimatedObjective에, 최적의 목표 함수 값(여기서는 OOB 오류)이 results.MinObjective에 저장됩니다.
 ```matlab
 % 특성 선택
-[idx2,scores] = fscchi2(XTrain,YTrain);
-
+p = anova1(XTrain,YTrain, 'off');
+[~, sortedIndices] = sort(p, 'ascend');
 % 상위 N개의 특성만 선택
 N = 12; % 선택할 특성의 수
-[~, sortedIndices] = sort(scores, 'descend');
 bestFeatureIdx = sortedIndices(1:N);
+XTrain = XTrain(:,bestFeatureIdx);
+XTest = XTest(:,bestFeatureIdx);
 ```
->fscchi2 함수를 사용하여 카이제곱 통계량을 기반으로 한 특성의 중요도를 계산하고, 그 중 상위 N개의 특성을 선택합니다.
+>anova1 함수를 사용하여 특성 데이터 열의 중요도를 계산하고, 그 중 상위 N개의 특성을 선택합니다.
+>ANOVA(Analysis of Variance)는 분산 분석을 의미하며, 통계학적 방법 중 하나입니다1. 이 방법은 두 개 이상의 모집단의 평균이 동일한지를 검증하는데 사용되며, 이는 t-검정을 두 개 이상의 그룹으로 일반화한 것입니다.
+>즉, ANOVA는 세 개 이상의 독립 그룹의 평균 사이에 통계적 차이가 있는지를 알려줍니다.
+```matlab
+% 최적의 하이퍼파라미터로 모델 훈련
+Mdl = TreeBagger(results.XAtMinEstimatedObjective.NumTrees, XTrain, YTrain, 'Method', 'classification', 'MinLeafSize', results.XAtMinEstimatedObjective.MinLeafSize, 'NumPredictorstoSample', results.XAtMinEstimatedObjective.NumPredictorstoSample);
 
-카이-제곱 통계량은 데이터의 분포 및 사용자가 선택한 기대 또는 가정된 분포 사이의 차이를 나타내는 측정값입니다.
+% 테스트 데이터에 대한 예측 수행
+YPred = predict(Mdl, XTest);
+
+% 정확도 계산
+accuracy = sum(YTest == str2double(YPred)) / length(YTest);
+fprintf('Accuracy: %.2f%%\n', accuracy * 100);
+```
+>앞서 구한 하이퍼파라미터를 이용하여 모델을 훈련하고, 예측을 수행한 뒤 정확도를 계산합니다.
+
+
