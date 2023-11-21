@@ -25,7 +25,7 @@ AI+X 딥러닝 Final Project
   - 모델의 정확성 향상: 특히 음악의 다양한 측면을 반영하는 다양한 특징을 고려하여 모델의 정확성을 향상시키고, 다양한 장르에 대한 분류 성능을 최적화합니다.
 
 ------------------------------------
-## Datasets
+## II. Datasets
   - non_preprocessed.csv: 전처리 이전의 데이터(https://www.kaggle.com/datasets/joebeachcapital/30000-spotify-songs/data)
   - preprocessed.csv: 전처리 이후의 데이터(직접 엑셀 파일에서 누락 데이터 등을 제거하고, 추가로 matlab 또는 python을 통해 전처리를 진행)
     
