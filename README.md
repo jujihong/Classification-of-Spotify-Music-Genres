@@ -186,11 +186,11 @@ results = bayesopt(oobErrRF, hyperparametersRF, 'Verbose', 1, 'IsObjectiveDeterm
 ```
 >여기서 oobErrFcn은 Out-of-Bag 오류를 계산하는 함수입니다. OOB 오류는 랜덤 포레스트 모델에서 모델의 일반화 성능을 추정하는 데 사용되는 지표로, 훈련 중에 사용되지 않은 데이터를 활용하여 모델의 성능을 평가합니다.
 >oobErrRF: 최적화할 목표 함수 (Out-of-Bag 오류 계산 함수)
-hyperparametersRF: 최적화할 하이퍼파라미터의 범위와 유형이 정의된 변수
-'Verbose', 1: 최적화 과정을 화면에 표시합니다. 숫자 1은 상세한 출력을 나타냅니다.
-'IsObjectiveDeterministic', true: 목표 함수가 결정적(deterministic)이라는 것을 나타냅니다. 즉, 같은 입력에 대해 항상 같은 결과를 반환한다는 의미입니다.
-'AcquisitionFunctionName', 'expected-improvement-plus': 효과적인 하이퍼파라미터 탐색을 위한 획득 함수(acquisition function)를 지정합니다. 'expected-improvement-plus'는 기본 획득 함수로, 이 함수는 예상 향상과 불확실성을 동시에 고려하여 탐색을 진행합니다.
-bayesopt 함수 실행 후에는 최적의 하이퍼파라미터 조합이 results.XAtMinEstimatedObjective에, 최적의 목표 함수 값(여기서는 OOB 오류)이 results.MinObjective에 저장됩니다.
+>hyperparametersRF: 최적화할 하이퍼파라미터의 범위와 유형이 정의된 변수
+>'Verbose', 1: 최적화 과정을 화면에 표시합니다. 숫자 1은 상세한 출력을 나타냅니다.
+>'IsObjectiveDeterministic', true: 목표 함수가 결정적(deterministic)이라는 것을 나타냅니다. 즉, 같은 입력에 대해 항상 같은 결과를 반환한다는 의미입니다.
+>'AcquisitionFunctionName', 'expected-improvement-plus': 효과적인 하이퍼파라미터 탐색을 위한 획득 함수(acquisition function)를 지정합니다. 'expected-improvement-plus'는 기본 획득 함수로, 이 함수는 예상 향상과 불확실성을 동시에 고려하여 탐색을 진행합니다.
+>bayesopt 함수 실행 후에는 최적의 하이퍼파라미터 조합이 results.XAtMinEstimatedObjective에, 최적의 목표 함수 값(여기서는 OOB 오류)이 results.MinObjective에 저장됩니다.
 ```matlab
 % 특성 선택
 [idx2,scores] = fscchi2(XTrain,YTrain);
