@@ -255,6 +255,6 @@ print(confusion_matrix(YTest, YPred))
   - 사용한 데이터가 12개의 특성 데이터를 가지고 있고, 전처리 이후에도 6개의 클래스를 가지는 매우 어려운 분류이므로, 높은 정확도를 얻을 수는 없었습니다. 같은 클래스에서 가지는 특성 데이터의 값의 이상치를 제거하려는 노력또한 해보았으나, 유의미한 결과를 얻을 수는 없었습니다. 더 많은 지식과, 데이터 셋에대한 깊은 이해가 좋은 모델을 만들기 위해서는 필요할 것이라 생각됩니다.
 
 ## V. Reference
-https://www.kaggle.com/datasets/joebeachcapital/30000-spotify-songs/data: 데이터셋
-https://kr.mathworks.com/help/stats/decision-trees.html: 결정 트리 방법(MATLAB)
-https://kr.mathworks.com/help/stats/regression-tree-ensembles.html: 랜덤 포레스트 방법(MATLAB)
+  - https://www.kaggle.com/datasets/joebeachcapital/30000-spotify-songs/data: 데이터셋
+  - https://kr.mathworks.com/help/stats/decision-trees.html: 결정 트리 방법(MATLAB)
+  - https://kr.mathworks.com/help/stats/regression-tree-ensembles.html: 랜덤 포레스트 방법(MATLAB)
