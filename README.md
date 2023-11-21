@@ -244,5 +244,5 @@ print(confusion_matrix(YTest, YPred))
 ```
 >정확도와 혼동 행렬을 표시합니다.
 ><p align="center">
-  <img src="https://github.com/jujihong/predict_demagnet/blob/main/decisiontree_confusion_matrix.jpg">
+  <img src="https://github.com/jujihong/predict_demagnet/blob/main/result_randomforest.jpg">
 </p>
