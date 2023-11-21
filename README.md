@@ -135,93 +135,111 @@ load('decisiontree.mat');
 
 랜덤 포레스트(Random Forest)는 여러 개의 결정 트리(Decision Tree)를 조합하여 높은 성능과 안정성을 제공하는 앙상블(Ensemble) 학습 모델입니다. 랜덤 포레스트는 다수의 결정 트리를 만들고 각 트리의 예측을 결합함으로써 높은 정확도를 달성합니다.
 
-```matlab
-% 테이블 생성
-Table = readtable("preprocessed.csv");
+랜덤 포레스트 모델은 python을 통하여 코딩하였습니다.
 
-% 문자열을 범주형 데이터로 변환
-Table.playlist_genre = categorical(Table.playlist_genre);
-
-% 범주형 데이터를 정수 인덱스로 변환
-[Table.playlist_genre, genreNames] = grp2idx(Table.playlist_genre);
-
-% 특성 데이터 설정
-data = 2:13;
-
-% 데이터 정규화
-for i = data
-    Table.(Table.Properties.VariableNames{i}) = normalize(Table.(Table.Properties.VariableNames{i}));
-end
-
-% 데이터 준비
-X = Table(:, data); % 특성 데이터
-Y = Table.playlist_genre; % 레이블 데이터
-
-% 데이터를 훈련 세트와 테스트 세트로 분할
-cv = cvpartition(size(Table, 1), 'HoldOut', 0.4);
-idx = cv.test;
-
-% 훈련과 테스트 데이터 분할
-XTrain = X(~idx,:);
-YTrain = Y(~idx,:);
-XTest = X(idx,:);
-YTest = Y(idx,:);
+```python
+import pandas as pd
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.metrics import accuracy_score
+from imblearn.over_sampling import SMOTE
 ```
->이전의 결정 트리 모델의 코드와 동일합니다.
-```matlab
-% 하이퍼파라미터 범위 설정
-hyperparametersRF = [
-    optimizableVariable('NumTrees', [10,300], 'Type', 'integer');
-    optimizableVariable('MinLeafSize', [1,50], 'Type', 'integer');
-    optimizableVariable('NumPredictorstoSample', [1,size(XTrain,2)], 'Type', 'integer')
-];
+> 필요한 라이브러리를 import합니다.
+pandas: 데이터 분석을 위한 파이썬 라이브러리로, 데이터프레임(DataFrame)이라는 효율적인 데이터 구조를 제공합니다. pd.read_csv 함수는 CSV 파일을 읽어 데이터프레임으로 변환하는 데 사용됩니다.
+
+numpy: 수치 계산을 위한 파이썬 라이브러리로, 다차원 배열 객체와 이를 다루기 위한 도구를 제공합니다.
+
+sklearn.ensemble.RandomForestClassifier: 랜덤 포레스트 분류 모델을 구현한 클래스입니다. 랜덤 포레스트는 여러 개의 결정 트리를 학습시키고, 그 결과를 평균내어 예측하는 알고리즘입니다.
+
+sklearn.model_selection.train_test_split: 데이터를 훈련 세트와 테스트 세트로 분할하는 함수입니다.
+
+sklearn.metrics.confusion_matrix: 혼동 행렬(confusion matrix)을 계산하는 함수입니다. 혼동 행렬은 분류 모델의 성능을 평가하는 데 사용됩니다.
+
+sklearn.preprocessing.LabelEncoder: 범주형 레이블을 정수로 변환하는 데 사용되는 클래스입니다.
+
+sklearn.preprocessing.StandardScaler: 특성의 스케일을 조정하는 데 사용되는 클래스입니다. 각 특성의 평균을 0, 분산을 1로 변경하여 정규화합니다.
+
+sklearn.metrics.accuracy_score: 분류 모델의 정확도를 계산하는 함수입니다.
+
+imblearn.over_sampling.SMOTE: SMOTE(Synthetic Minority Over-sampling Technique)는 소수 클래스의 오버샘플링을 위한 기법입니다. 소수 클래스의 샘플을 임의로 선택하고 이웃하는 샘플들 사이에 가상의 샘플을 생성합니다. 이를 통해 클래스 불균형 문제를 해결할 수 있습니다.
+
+```python
+# 데이터 로드
+Table = pd.read_csv("preprocessed.csv")
+
+# 문자열을 범주형 데이터로 변환
+Table['playlist_genre'] = LabelEncoder().fit_transform(Table['playlist_genre'])
+
+# 특성 데이터 설정
+data = Table.columns[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]]
+
+# 데이터 정규화
+scaler = StandardScaler()
+Table[data] = scaler.fit_transform(Table[data])
+
+# 데이터 준비
+X = Table[data]  # 특성 데이터
+Y = Table['playlist_genre']  # 레이블 데이터
+
+# 데이터를 훈련 세트와 테스트 세트로 분할
+XTrain, XTest, YTrain, YTest = train_test_split(X, Y, test_size=0.4, random_state=42)
 ```
->최적의 하이퍼파라미터로 랜덤 포레스트 모델을 훈련하기 위하여 NumTrees(결정 트리의 수), MinLeafSize(각 리프 노드에 포함되는 최소한의 데이터 포인트 수), NumPredictorstoSample(분할에 사용할 특성의 수)의 파라미터 범위를 정의합니다.
-```matlab
-% 목표 함수 정의
-oobErrRF = @(x) oobErrFcn(x, XTrain, YTrain);
-
-% Bayesian Optimization 실행
-results = bayesopt(oobErrRF, hyperparametersRF, 'Verbose', 1, 'IsObjectiveDeterministic', true, 'AcquisitionFunctionName', 'expected-improvement-plus');
+>결정 트리 모델(matlab)에서의 과정과 동일합니다.
+```python
+# 데이터 균형 조정
+sm = SMOTE(random_state=42)
+XTrain, YTrain = sm.fit_resample(XTrain, YTrain)
 ```
->여기서 oobErrFcn은 Out-of-Bag 오류를 계산하는 함수입니다. OOB 오류는 랜덤 포레스트 모델에서 모델의 일반화 성능을 추정하는 데 사용되는 지표로, 훈련 중에 사용되지 않은 데이터를 활용하여 모델의 성능을 평가합니다.
-
-oobErrRF: 최적화할 목표 함수 (Out-of-Bag 오류 계산 함수)
-
-hyperparametersRF: 최적화할 하이퍼파라미터의 범위와 유형이 정의된 변수
-
-'Verbose', 1: 최적화 과정을 화면에 표시합니다. 숫자 1은 상세한 출력을 나타냅니다.
-
-'IsObjectiveDeterministic', true: 목표 함수가 결정적(deterministic)이라는 것을 나타냅니다. 즉, 같은 입력에 대해 항상 같은 결과를 반환한다는 의미입니다.
-
-'AcquisitionFunctionName', 'expected-improvement-plus': 효과적인 하이퍼파라미터 탐색을 위한 획득 함수(acquisition function)를 지정합니다. 'expected-improvement-
-plus'는 기본 획득 함수로, 이 함수는 예상 향상과 불확실성을 동시에 고려하여 탐색을 진행합니다.
-
-bayesopt 함수 실행 후에는 최적의 하이퍼파라미터 조합이 results.XAtMinEstimatedObjective에, 최적의 목표 함수 값(여기서는 OOB 오류)이 results.MinObjective에 저장됩니다.
-```matlab
-% 특성 선택
-p = anova1(XTrain,YTrain, 'off');
-[~, sortedIndices] = sort(p, 'ascend');
-% 상위 N개의 특성만 선택
-N = 12; % 선택할 특성의 수
-bestFeatureIdx = sortedIndices(1:N);
-XTrain = XTrain(:,bestFeatureIdx);
-XTest = XTest(:,bestFeatureIdx);
+>이 코드는 데이터의 클래스 불균형을 조정하기 위해 사용됩니다. 소수 클래스의 샘플을 임의로 선택하고 이웃하는 샘플들 사이에 가상의 샘플을 생성하는 오버샘플링 방법입니다.
+```python
+# 특성 중요도 평가
+Mdl = RandomForestClassifier(n_estimators=300, min_samples_split=2, max_features=0.1, random_state=42)
+Mdl.fit(XTrain, YTrain)
+importances = Mdl.feature_importances_
+feature_importances = pd.Series(importances, index=X.columns)
 ```
->anova1 함수를 사용하여 특성 데이터 열의 중요도를 계산하고, 그 중 상위 N개의 특성을 선택합니다.
->ANOVA(Analysis of Variance)는 분산 분석을 의미하며, 통계학적 방법 중 하나입니다1. 이 방법은 두 개 이상의 모집단의 평균이 동일한지를 검증하는데 사용되며, 이는 t-검정을 두 개 이상의 그룹으로 일반화한 것입니다.
->즉, ANOVA는 세 개 이상의 독립 그룹의 평균 사이에 통계적 차이가 있는지를 알려줍니다.
-```matlab
-% 최적의 하이퍼파라미터로 모델 훈련
-Mdl = TreeBagger(results.XAtMinEstimatedObjective.NumTrees, XTrain, YTrain, 'Method', 'classification', 'MinLeafSize', results.XAtMinEstimatedObjective.MinLeafSize, 'NumPredictorstoSample', results.XAtMinEstimatedObjective.NumPredictorstoSample);
+>랜덤 포레스트 분류기 객체를 생성합니다. 이때 n_estimators는 생성할 트리의 개수, min_samples_split는 노드를 분할하기 위한 최소의 샘플 수,max_features는 각 분할에서 고려할 특성의 최대 수, random_state는 결과의 재현성을 보장하기 위한 난수 생성기의 시드입니다. 그 후, 랜덤 포레스트 분류기 모델을 훈련 데이터를 통해 학습시킵니다. 다음으로 훈련된 분류기의 특성 중요도를 가져옵니다. 특성 데이터 12개중 필요 없는 데이터를 제외하기 위함입니다.
 
-% 테스트 데이터에 대한 예측 수행
-YPred = predict(Mdl, XTest);
-
-% 정확도 계산
-accuracy = sum(YTest == str2double(YPred)) / length(YTest);
-fprintf('Accuracy: %.2f%%\n', accuracy * 100);
+```python
+# 중요도가 0.08 미만인 특성 제거
+mask = feature_importances > 0.08
+reduced_X = X.loc[:, mask]
 ```
->앞서 구한 하이퍼파라미터를 이용하여 모델을 훈련하고, 예측을 수행한 뒤 정확도를 계산합니다.
+>중요도가 0.08 미만인 특성을 제거합니다. 여러 번의 실행을 통해 중요도 경계를 조절하였습니다. 모델의 분류 정확도를 기준으로 경계의 값이 결정되었습니다.
 
+```python
+# 제거된 특성 출력
+removed_features = X.columns[~mask]
+print("Removed features:")
+print(removed_features)
+```
+>prompt 창에서 제거된 특성을 확인할 수 있도록 합니다.
 
+```python
+# 데이터를 훈련 세트와 테스트 세트로 분할
+XTrain, XTest, YTrain, YTest = train_test_split(reduced_X, Y, test_size=0.4, random_state=41)
+
+# 데이터 균형 조정
+sm = SMOTE(random_state=42)
+XTrain, YTrain = sm.fit_resample(XTrain, YTrain)
+
+#모델 훈련
+Mdl = RandomForestClassifier(n_estimators=300, min_samples_split=3, max_features=0.1, random_state=41)
+Mdl.fit(XTrain, YTrain)
+
+# 테스트 데이터에 대한 예측 수행
+YPred = Mdl.predict(XTest)
+```
+>X의 데이터가 변경되었으므로(삭제된 데이터가 존재하므로), 다시 데이터를 분할합니다. 분할할 때의 랜덤 시드는 이전의 분할과 다른 값으로 선택되었습니다(42>41). 이후 랜덤 포레스트 분류기 객체를 생성하고, 모델을 훈련하고, 훈련된 모델을 이용하여 예측을 진행합니다.
+```python
+# 정확도 계산
+accuracy = accuracy_score(YTest, YPred)
+print('Accuracy: %.2f%%' % (accuracy * 100))
+
+# 혼동 행렬
+print(confusion_matrix(YTest, YPred))
+```
+>정확도와 혼동 행렬을 표시합니다.
