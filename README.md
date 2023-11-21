@@ -27,7 +27,7 @@ AI+X 딥러닝 Final Project
 ------------------------------------
 ## Datasets
   - non_preprocessed.csv: 전처리 이전의 데이터(https://www.kaggle.com/datasets/joebeachcapital/30000-spotify-songs/data)
-  - preprocessed.csv: 전처리 이후의 데이터
+  - preprocessed.csv: 전처리 이후의 데이터(직접 엑셀 파일에서 누락 데이터 등을 제거하고, 추가로 matlab 또는 python을 통해 전처리를 진행)
     
       danceability는 음악의 템포, 리듬 안정성, 비트 강도 및 전반적인 규칙성을 기반으로 춤에 적합한 정도를 나타내는 지표입니다. 0.0은 가장 춤에 적합하지 않고, 1.0은 가장 춤에 적합한 것을 나타냅니다.
 
@@ -246,3 +246,15 @@ print(confusion_matrix(YTest, YPred))
 ><p align="center">
   <img src="https://github.com/jujihong/predict_demagnet/blob/main/result_randomforest.jpg">
 </p>
+
+## IV. Conclusion
+결정 트리 모델을 사용하여 분류를 진행하였을 때보다, 결정 트리 모델의 앙상블 모델인 랜덤 포레스트 모델을 진행하였을 경우, 더 높은 정확도를 얻을 수 있었습니다. 이외에도 여러 랜덤 포레스트 모델을 이용하는 보팅 방법, 랜덤 포레스트 모델의 하이퍼 파라미터 튜닝 방법(GridSearchCV, RandomizedSearchCV), 신경망 방법 등을 이용하여 분류를 진행해 보았으나, 두 번째로 표현된 모델이 가장 높은 정확도를 가지는 것을 확인하였습니다.
+(+) 신경망 방법으로는(neural.m) 약 22% 정도의 정확도를 얻을 수 있었습니다. 이는 랜덤으로 분류 시의 정확도(16.6%)보다 크게 높은 값이 아니므로 좋은 모델이라고 할 수 없습니다.
+(+) 랜덤 포레스트 모델을 이용한 보팅 방법, 랜덤 포레스트 모델의 하이퍼 파라미터 튜닝 방법(GridSearchCV, RandomizedSearchCV)은 정확도가 약 53~54%로 나왔습니다.
+
+사용한 데이터가 12개의 특성 데이터를 가지고 있고, 전처리 이후에도 6개의 클래스를 가지는 매우 어려운 분류이므로, 높은 정확도를 얻을 수는 없었습니다. 같은 클래스에서 가지는 특성 데이터의 값의 이상치를 제거하려는 노력또한 해보았으나, 유의미한 결과를 얻을 수는 없었습니다. 더 많은 지식과, 데이터 셋에대한 깊은 이해가 좋은 모델을 만들기 위해서는 필요할 것이라 생각됩니다.
+
+## V. Reference
+https://www.kaggle.com/datasets/joebeachcapital/30000-spotify-songs/data: 데이터셋
+https://kr.mathworks.com/help/stats/decision-trees.html: 결정 트리 방법(MATLAB)
+https://kr.mathworks.com/help/stats/regression-tree-ensembles.html: 랜덤 포레스트 방법(MATLAB)
