@@ -67,6 +67,7 @@ AI+X 딥러닝 Final Project
 
 ### Code 설명
 #### 결정 트리 모델
+결정 트리는 데이터를 기반으로 예측 모델을 만드는 알고리즘으로, 의사 결정 과정을 트리 구조로 나타냅니다. 뿌리 노드에서 시작하여 결정 노드를 통해 데이터를 분할하고, 잎 노드에서 예측 결과를 제공합니다. 학습 과정에서 중요한 속성을 찾아내어 이를 기준으로 데이터를 계층적으로 분류하는 방식으로 작동합니다.
 ```matlab
 % 테이블 생성
 Table = readtable("preprocessed.csv");
@@ -130,4 +131,75 @@ load('decisiontree.mat');
 </p>
 
 #### 랜덤 포레스트 모델
-6개의 클래스가 있기에, test 데이터를 무작위로 찍으면 결과가 정답일 확률은 16.66%입니다. 결정 트리 모델은 대략 44~46% 정도의 정확도를 보였습니다. 이는 16.66%에 비해서는 높은 값이지만, 좀 더 좋은 모델을 이용하여 분류의 정확도를 높이고자 하였습니다
+6개의 클래스가 있기에, test 데이터를 무작위로 찍으면 결과가 정답일 확률은 16.66%입니다. 결정 트리 모델은 대략 44~46% 정도의 정확도를 보였습니다. 이는 16.66%에 비해서는 높은 값이지만, 좀 더 좋은 모델을 이용하여 분류의 정확도를 높이고자 하였습니다.
+
+랜덤 포레스트(Random Forest)는 여러 개의 결정 트리(Decision Tree)를 조합하여 높은 성능과 안정성을 제공하는 앙상블(Ensemble) 학습 모델입니다. 랜덤 포레스트는 다수의 결정 트리를 만들고 각 트리의 예측을 결합함으로써 높은 정확도를 달성합니다.
+
+```matlab
+% 테이블 생성
+Table = readtable("preprocessed.csv");
+
+% 문자열을 범주형 데이터로 변환
+Table.playlist_genre = categorical(Table.playlist_genre);
+
+% 범주형 데이터를 정수 인덱스로 변환
+[Table.playlist_genre, genreNames] = grp2idx(Table.playlist_genre);
+
+% 특성 데이터 설정
+data = 2:13;
+
+% 데이터 정규화
+for i = data
+    Table.(Table.Properties.VariableNames{i}) = normalize(Table.(Table.Properties.VariableNames{i}));
+end
+
+% 데이터 준비
+X = Table(:, data); % 특성 데이터
+Y = Table.playlist_genre; % 레이블 데이터
+
+% 데이터를 훈련 세트와 테스트 세트로 분할
+cv = cvpartition(size(Table, 1), 'HoldOut', 0.4);
+idx = cv.test;
+
+% 훈련과 테스트 데이터 분할
+XTrain = X(~idx,:);
+YTrain = Y(~idx,:);
+XTest = X(idx,:);
+YTest = Y(idx,:);
+```
+>이전의 결정 트리 모델의 코드와 동일합니다.
+```matlab
+% 하이퍼파라미터 범위 설정
+hyperparametersRF = [
+    optimizableVariable('NumTrees', [10,300], 'Type', 'integer');
+    optimizableVariable('MinLeafSize', [1,50], 'Type', 'integer');
+    optimizableVariable('NumPredictorstoSample', [1,size(XTrain,2)], 'Type', 'integer')
+];
+```
+>최적의 하이퍼파라미터로 랜덤 포레스트 모델을 훈련하기 위하여 NumTrees(결정 트리의 수), MinLeafSize(각 리프 노드에 포함되는 최소한의 데이터 포인트 수), NumPredictorstoSample(분할에 사용할 특성의 수)의 파라미터 범위를 정의합니다.
+```matlab
+% 목표 함수 정의
+oobErrRF = @(x) oobErrFcn(x, XTrain, YTrain);
+
+% Bayesian Optimization 실행
+results = bayesopt(oobErrRF, hyperparametersRF, 'Verbose', 1, 'IsObjectiveDeterministic', true, 'AcquisitionFunctionName', 'expected-improvement-plus');
+```
+>여기서 oobErrFcn은 Out-of-Bag 오류를 계산하는 함수입니다. OOB 오류는 랜덤 포레스트 모델에서 모델의 일반화 성능을 추정하는 데 사용되는 지표로, 훈련 중에 사용되지 않은 데이터를 활용하여 모델의 성능을 평가합니다.
+>oobErrRF: 최적화할 목표 함수 (Out-of-Bag 오류 계산 함수)
+hyperparametersRF: 최적화할 하이퍼파라미터의 범위와 유형이 정의된 변수
+'Verbose', 1: 최적화 과정을 화면에 표시합니다. 숫자 1은 상세한 출력을 나타냅니다.
+'IsObjectiveDeterministic', true: 목표 함수가 결정적(deterministic)이라는 것을 나타냅니다. 즉, 같은 입력에 대해 항상 같은 결과를 반환한다는 의미입니다.
+'AcquisitionFunctionName', 'expected-improvement-plus': 효과적인 하이퍼파라미터 탐색을 위한 획득 함수(acquisition function)를 지정합니다. 'expected-improvement-plus'는 기본 획득 함수로, 이 함수는 예상 향상과 불확실성을 동시에 고려하여 탐색을 진행합니다.
+bayesopt 함수 실행 후에는 최적의 하이퍼파라미터 조합이 results.XAtMinEstimatedObjective에, 최적의 목표 함수 값(여기서는 OOB 오류)이 results.MinObjective에 저장됩니다.
+```matlab
+% 특성 선택
+[idx2,scores] = fscchi2(XTrain,YTrain);
+
+% 상위 N개의 특성만 선택
+N = 12; % 선택할 특성의 수
+[~, sortedIndices] = sort(scores, 'descend');
+bestFeatureIdx = sortedIndices(1:N);
+```
+>fscchi2 함수를 사용하여 카이제곱 통계량을 기반으로 한 특성의 중요도를 계산하고, 그 중 상위 N개의 특성을 선택합니다.
+
+카이-제곱 통계량은 데이터의 분포 및 사용자가 선택한 기대 또는 가정된 분포 사이의 차이를 나타내는 측정값입니다.
