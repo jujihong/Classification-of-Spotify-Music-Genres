@@ -243,3 +243,6 @@ print('Accuracy: %.2f%%' % (accuracy * 100))
 print(confusion_matrix(YTest, YPred))
 ```
 >정확도와 혼동 행렬을 표시합니다.
+><p align="center">
+  <img src="https://github.com/jujihong/predict_demagnet/blob/main/decisiontree_confusion_matrix.jpg">
+</p>
