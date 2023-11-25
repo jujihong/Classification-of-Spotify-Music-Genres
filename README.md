@@ -67,6 +67,10 @@ AI+X 딥러닝 Final Project
 
 ### Code 설명
 #### 결정 트리 모델
+><p align="center">
+  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/main/Decision_tree.jpg">
+</p>
+
 결정 트리는 데이터를 기반으로 예측 모델을 만드는 알고리즘으로, 의사 결정 과정을 트리 구조로 나타냅니다. 뿌리 노드에서 시작하여 결정 노드를 통해 데이터를 분할하고, 잎 노드에서 예측 결과를 제공합니다. 학습 과정에서 중요한 속성을 찾아내어 이를 기준으로 데이터를 계층적으로 분류하는 방식으로 작동합니다.
 ```matlab
 % 테이블 생성
@@ -131,6 +135,9 @@ load('decisiontree.mat');
 </p>
 
 #### 랜덤 포레스트 모델
+><p align="center">
+  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/main/Random_forest.jpg">
+</p>
 6개의 클래스가 있기에, test 데이터를 무작위로 찍으면 결과가 정답일 확률은 16.66%입니다. 결정 트리 모델은 대략 44~46% 정도의 정확도를 보였습니다. 이는 16.66%에 비해서는 높은 값이지만, 좀 더 좋은 모델을 이용하여 분류의 정확도를 높이고자 하였습니다.
 
 랜덤 포레스트(Random Forest)는 여러 개의 결정 트리(Decision Tree)를 조합하여 높은 성능과 안정성을 제공하는 앙상블(Ensemble) 학습 모델입니다. 랜덤 포레스트는 다수의 결정 트리를 만들고 각 트리의 예측을 결합함으로써 높은 정확도를 달성합니다.
