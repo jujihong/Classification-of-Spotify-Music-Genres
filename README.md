@@ -299,6 +299,7 @@ print(confusion_matrix(YTest, YPred))
 ><p align="center">
   <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/valence.jpg?raw=true">
 </p>
+  - key, mode, liveness가 특성 중요도 평가를 통해 제거되었기에, 클래스에 따른 특성 데이터의 분포의 히스토그램에서 클래스끼리 구별되는 특성이 거의 없을 것이라고 예측하였으나, 제거되지 않은 특성 데이터들 중에도 클래스별로 눈에 띄는 차이를 보이지 않는 경우도 있었기에, 히스토그램을 분석하여 특성 중요도와 데이터 분포간의 관계를 직관적으로 파악하는 것은 실패하였습니다.
 
 ## V. Reference
   - https://www.kaggle.com/datasets/joebeachcapital/30000-spotify-songs/data: 데이터셋
