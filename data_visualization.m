@@ -13,10 +13,10 @@ Table.playlist_genre = double(Table.playlist_genre);
 features = table2array(Table(:, 2:13));
 
 % 특성 데이터 설정(몇 열)
-k=2;
+k=12; %2~13으로 설정
 
 % 2열 특성 데이터 추출
-feature2 = features(:, k);
+feature2 = features(:, k-1);
 class1_data = feature2(Table.playlist_genre == 1);
 class2_data = feature2(Table.playlist_genre == 2);
 class3_data = feature2(Table.playlist_genre == 3);
