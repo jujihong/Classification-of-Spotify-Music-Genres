@@ -253,6 +253,8 @@ print(confusion_matrix(YTest, YPred))
 ><p align="center">
   <img src="https://github.com/jujihong/predict_demagnet/blob/main/result_randomforest.jpg">
 </p>
+> 특성 데이터중 key, mode, liveness가 특성 중요도에 의해 삭제되었음을 확인할 수 있습니다.
+또한 55.7%의 정확도 결과가 나왔습니다.
 
 ## IV. Conclusion
   - 결정 트리 모델을 사용하여 분류를 진행하였을 때보다, 결정 트리 모델의 앙상블 모델인 랜덤 포레스트 모델을 진행하였을 경우, 더 높은 정확도를 얻을 수 있었습니다. 이외에도 여러 랜덤 포레스트 모델을 이용하는 보팅 방법, 랜덤 포레스트 모델의 하이퍼 파라미터 튜닝 방법(GridSearchCV, RandomizedSearchCV), 신경망 방법 등을 이용하여 분류를 진행해 보았으나, 두 번째로 표현된 모델이 가장 높은 정확도를 가지는 것을 확인하였습니다.
@@ -260,7 +262,40 @@ print(confusion_matrix(YTest, YPred))
   - 랜덤 포레스트 모델을 이용한 보팅 방법, 랜덤 포레스트 모델의 하이퍼 파라미터 튜닝 방법(GridSearchCV, RandomizedSearchCV)은 정확도가 약 53~54%로 나왔습니다.
 
   - 사용한 데이터가 12개의 특성 데이터를 가지고 있고, 전처리 이후에도 6개의 클래스를 가지는 매우 어려운 분류이므로, 높은 정확도를 얻을 수는 없었습니다. 같은 클래스에서 가지는 특성 데이터의 값의 이상치를 제거하려는 노력또한 해보았으나, 유의미한 결과를 얻을 수는 없었습니다. 더 많은 지식과, 데이터 셋에대한 깊은 이해가 좋은 모델을 만들기 위해서는 필요할 것이라 생각됩니다.
-
+  - 랜덤 포레스트 모델에서 특성 중요도에 따라 특성 데이터가 삭제되었는데, 각 클래스 별 특성 데이터의 히스토그램을 통해 이를 설명하려 하였습니다. 결과는 아래의 그림과 같습니다.
+><p align="center">
+  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/acousticness.jpg?raw=true">
+</p>
+><p align="center">
+  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/danceability.jpg?raw=true.jpg">
+</p>
+><p align="center">
+  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/energy.jpg?raw=true">
+</p>
+><p align="center">
+  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/instrumentalness.jpg?raw=true.jpg">
+</p>
+><p align="center">
+  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/key.jpg?raw=true.jpg">
+</p>
+><p align="center">
+  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/liveness.jpg?raw=true.jpg">
+</p>
+><p align="center">
+  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/loudness.jpg?raw=true">
+</p>
+><p align="center">
+  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/mode.jpg?raw=true">
+</p>
+><p align="center">
+  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/speechiness.jpg?raw=true">
+</p>
+><p align="center">
+  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/tempo.jpg?raw=true">
+</p>
+><p align="center">
+  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/valence.jpg?raw=true">
+</p>
 ## V. Reference
   - https://www.kaggle.com/datasets/joebeachcapital/30000-spotify-songs/data: 데이터셋
   - https://kr.mathworks.com/help/stats/decision-trees.html: 결정 트리 방법(MATLAB)
