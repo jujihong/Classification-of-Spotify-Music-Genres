@@ -267,19 +267,22 @@ print(confusion_matrix(YTest, YPred))
   <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/acousticness.jpg?raw=true">
 </p>
 ><p align="center">
-  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/danceability.jpg?raw=true.jpg">
+  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/danceability.jpg?raw=true">
+</p>
+><p align="center">
+  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/duration_s.jpg?raw=true">
 </p>
 ><p align="center">
   <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/energy.jpg?raw=true">
 </p>
 ><p align="center">
-  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/instrumentalness.jpg?raw=true.jpg">
+  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/instrumentalness.jpg?raw=true">
 </p>
 ><p align="center">
-  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/key.jpg?raw=true.jpg">
+  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/key.jpg?raw=true">
 </p>
 ><p align="center">
-  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/liveness.jpg?raw=true.jpg">
+  <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/liveness.jpg?raw=true">
 </p>
 ><p align="center">
   <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/loudness.jpg?raw=true">
@@ -296,6 +299,7 @@ print(confusion_matrix(YTest, YPred))
 ><p align="center">
   <img src="https://github.com/jujihong/Classification-of-Spotify-Music-Genres/blob/jpg/valence.jpg?raw=true">
 </p>
+
 ## V. Reference
   - https://www.kaggle.com/datasets/joebeachcapital/30000-spotify-songs/data: 데이터셋
   - https://kr.mathworks.com/help/stats/decision-trees.html: 결정 트리 방법(MATLAB)
