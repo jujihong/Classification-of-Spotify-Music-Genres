@@ -9,7 +9,7 @@ AI+X 딥러닝 Final Project
 ### Members:
   - 주지홍 미래자동차공학과(tjqjtjqj@hanyang.ac.kr): python, matlab 코딩
   - 심동빈 기계공학과(dong-bin@naver.com): 자료조사, 제출 관련 작업 및 code review
-  - 유경원 경영학부(yoowon0527@naver.com): 자료조사 및 github blog 관리 및 code review
+  - 유경원 경영학부(yoowon0527@naver.com): 자료조사, github blog 관리 및 code review
 
 ----------------------------
 
